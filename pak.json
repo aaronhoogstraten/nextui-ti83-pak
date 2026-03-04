@@ -1,0 +1,16 @@
+{
+  "name": "TI83",
+  "version": "0.1.0",
+  "type": "EMU",
+  "description": "TI-83 graphing calculator emulator via the Numero Libretro core",
+  "author": "aaronhoogstraten",
+  "repo_url": "https://github.com/aaronhoogstraten/nextui-ti83-pak",
+  "release_filename": "TI83.pak.zip",
+  "changelog": {
+    "0.1.0": "Initial Pak"
+  },
+  "platforms": [
+    "tg5040",
+    "tg5050"
+  ]
+}

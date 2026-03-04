@@ -1,0 +1,8 @@
+*.so
+*.o
+*.d
+TI83.pak/
+TI83.pak.zip
+numero-src/
+/.claude
+/references

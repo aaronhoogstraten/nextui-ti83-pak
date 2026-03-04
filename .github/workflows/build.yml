@@ -1,0 +1,52 @@
+name: Build Numero Pak
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g. 1.0.0)'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04-arm
+    container: ghcr.io/loveretro/tg5040-toolchain:main
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout pak repo
+        uses: actions/checkout@v6
+
+      - name: Install build tools
+        run: apt-get update && apt-get install -y make zip
+
+      - name: Clone Numero source
+        run: |
+          git clone --single-branch https://github.com/nbarkhina/numero.git numero-src
+          cd numero-src
+          git checkout 867c40ad9cdfe5295e0be81e0a17b16964a4a33e
+
+      - name: Build Numero libretro core
+        run: |
+          cd numero-src
+          make -f Makefile.libretro platform=unix -j$(nproc)
+          aarch64-nextui-linux-gnu-strip numero_libretro.so
+
+      - name: Package and release
+        run: |
+          cp numero-src/numero_libretro.so .
+          zip TI83.pak.zip default.cfg launch.sh numero_libretro.so
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TI83.pak
+          path: TI83.pak.zip
+
+      - name: Create tag and GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ github.event.inputs.version }}
+          name: v${{ github.event.inputs.version }}
+          files: TI83.pak.zip
