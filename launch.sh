@@ -14,4 +14,4 @@ mkdir -p "$CHEATS_PATH/$EMU_TAG"
 HOME="$USERDATA_PATH"
 cd "$HOME"
 
-minarch.elf "$PAK_DIR/${EMU_EXE}_libretro.so" "$ROM" &> "$LOGS_PATH/$EMU_TAG.txt"
+minarch.elf "$PAK_DIR/${EMU_EXE}_libretro.so" "$ROM" &> "$LOGS_PATH/$EMU_TAG.log"

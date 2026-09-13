@@ -30,7 +30,8 @@ jobs:
       - name: Build Numero libretro core
         run: |
           cd numero-src
-          make -f Makefile.libretro platform=unix -j$(nproc)
+          # char is unsigned on aarch64; the Z80 core relies on signed char for (IX+d)/(IY+d) offsets
+          CFLAGS=-fsigned-char CXXFLAGS=-fsigned-char make -f Makefile.libretro platform=unix -j$(nproc)
           aarch64-nextui-linux-gnu-strip numero_libretro.so
 
       - name: Package and release
