@@ -27,6 +27,13 @@ jobs:
           cd numero-src
           git checkout 867c40ad9cdfe5295e0be81e0a17b16964a4a33e
 
+      - name: Apply patches
+        run: |
+          cd numero-src
+          for p in ../patches/*.patch; do
+            git apply --verbose "$p"
+          done
+
       - name: Build Numero libretro core
         run: |
           cd numero-src

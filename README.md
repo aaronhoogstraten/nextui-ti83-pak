@@ -27,17 +27,31 @@ Place these files in your `/Roms/TI-83 Calculator (TI83)/` directory:
 
 ## Controls
 
-Numero supports two control schemes, configurable in the core options:
+Numero supports two control schemes. Switch between them in the in-game menu under **Options → Emulator → Control scheme**.
 
 ### Joypad (Default)
 - **D-Pad / Left Stick** — Move virtual mouse cursor
 - **A** — Press calculator button / Click
+- **B** — 2ND
+- **X / Y** — Up / Down
+- **L / R** — Left / Right
+- **Select** — ALPHA
+- **Start** — ENTER
 - **R2** — Virtual mouse click
 - **L2** — Toggle between calculator view and "Big Mode"
 
 ### Gaming Buttons
-- More suited for playing actual TI-83 games
-- Maps gamepad buttons directly to common game controls
+More suited for playing games. The virtual mouse can still be moved with the left stick.
+- **D-Pad** — Arrow keys
+- **A** — 2ND
+- **B** — ALPHA
+- **X** — MODE
+- **Y** — PRGM
+- **Select** — CLEAR
+- **Start** — ENTER
+- **L / R** — X,T,θ,n / STAT
+- **R2** — Virtual mouse click
+- **L2** — Toggle between calculator view and "Big Mode"
 
 ## Usage Tips
 

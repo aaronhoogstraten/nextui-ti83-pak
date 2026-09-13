@@ -1,0 +1,69 @@
+diff --git a/libnumero/libretro/libretro_core_options_new.h b/libnumero/libretro/libretro_core_options_new.h
+index 66339ef..95a5295 100644
+--- a/libnumero/libretro/libretro_core_options_new.h
++++ b/libnumero/libretro/libretro_core_options_new.h
+@@ -71,6 +71,20 @@ extern "C" {
+          },
+          "1"
+       },
++      {
++         "control_scheme",
++         "Control scheme",
++         NULL,
++         "Joypad moves a virtual mouse. Gaming Buttons maps the D-pad and face buttons directly to calculator keys.",
++         NULL,
++         NULL,
++         {
++            { "joypad", "Joypad" },
++            { "gaming", "Gaming Buttons" },
++            { NULL, NULL },
++         },
++         "joypad"
++      },
+       {
+          "debug_mode",
+          "Enable Debug Mode",
+diff --git a/libnumero/libretro/libretronew.cpp b/libnumero/libretro/libretronew.cpp
+index 058fd7e..93b2e7e 100644
+--- a/libnumero/libretro/libretronew.cpp
++++ b/libnumero/libretro/libretronew.cpp
+@@ -72,6 +72,8 @@ int frameCounter = 0;
+ bool bigMode = false;
+ bool lastBigModePressed = false;
+ bool gamingButtons = false;
++bool gamingButtonsOption = false;
++unsigned port0Device = RETRO_DEVICE_JOYPAD;
+ bool hasBios = false;
+ unsigned char* calcScreen = NULL;
+ 
+@@ -717,6 +719,15 @@ static void check_variables(void)
+     {
+         debugMode = atoi(var2.value);
+     }
++
++    // Frontends without controller type selection can pick the scheme via this option
++    struct retro_variable var3 = { 0 };
++    var3.key = "control_scheme";
++    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var3) && var3.value)
++    {
++        gamingButtonsOption = strcmp(var3.value, "gaming") == 0;
++        retro_set_controller_port_device(0, port0Device);
++    }
+ }
+ 
+ #define RETRO_DEVICE_JOYPAD_ALT  RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_JOYPAD, 0)
+@@ -846,11 +857,12 @@ void retro_set_controller_port_device(unsigned port, unsigned device)
+ 
+     if (port == 0)
+     {
++        port0Device = device;
+         switch (device)
+         {
+         case RETRO_DEVICE_JOYPAD:
+-            gamingButtons = false;
+-            environ_cb(RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS, descJoypad);
++            gamingButtons = gamingButtonsOption;
++            environ_cb(RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS, gamingButtons ? descGaming : descJoypad);
+             break;
+         case RETRO_DEVICE_JOYPAD_ALT:
+             gamingButtons = true;
